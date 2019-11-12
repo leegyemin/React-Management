@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import {withStyles} from '@material-ui/core/styles'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = theme => ({
     root: {
@@ -17,12 +18,15 @@ const styles = theme => ({
     },
     table: {
         minWidth: 1080
+    },
+    progress: {
+        margin: theme.spacing(2)
     }
 });
 
 class App extends Component {
     state = {
-        customers: ""
+        customers: "",
     };
 
     componentDidMount() {
@@ -63,7 +67,10 @@ class App extends Component {
                                     birthday={c.birthday}
                                     gender={c.gender}
                                     job={c.job}/>
-                            }) : ""
+                            }) :
+                            <TableRow>
+                                <TableCell colSpan={6} align="center"><CircularProgress/></TableCell>
+                            </TableRow>
                         }
                     </TableBody>
                 </Table>
