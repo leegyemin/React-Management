@@ -11,9 +11,6 @@ const data = fs.readFileSync('./database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
 
-
-console.log(conf);
-
 const connection = mysql.createConnection({
     host: conf.host,
     user: conf.user,
@@ -24,16 +21,42 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+const multer = require('multer');
+const upload = multer({dest: './upload'});
+
 app.get('/api/customers', (req, res) => {
     connection.query(
-        "SELECT * FROM CUSTOMER",
-        (err, rows, fiedls) => {
-            console.log(err);
-            console.log(rows);
+        "SELECT * FROM CUSTOMER where isDeleted = 0",
+        (err, rows, fields) => {
             res.send(rows);
         }
     )
 });
+
+app.use('/image', express.static('./upload')); // image라는 이름으로 upload 폴더를 공유한다(static),  즉 매핑한다.
+
+app.post('/api/customers', upload.single('image'), (req, res) => {
+    let sql = "INSERT INTO CUSTOMER VALUES (null, ? ,? ,? ,? ,?, 0, now() )";
+    let image = "/image/" + req.file.filename;
+    let name = req.body.name;
+    let birthday = req.body.birthday;
+    let gender = req.body.gender;
+    let job = req.body.job;
+    let params = [image, name, birthday, gender, job];
+    connection.query(sql, params,
+        (err, rows, fields) => {
+            res.send(rows);
+        })
+});
+
+app.delete('/api/customers/:id', (req, res) => {
+    let sql = 'UPDATE CUSTOMER SET isDeleted = 1 where id = ?';
+    let params = [req.params.id];
+    connection.query(sql, params,
+        ( err, rows, fiedls) => {
+            res.send(rows)
+        })
+})
 
 app.get('/api/hello', (req, res) => {
     res.send({message: "Hello ~ "});
