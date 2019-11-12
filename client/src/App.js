@@ -13,7 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 const styles = theme => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3), // theme.spacing.unit * 3
         overflowX: 'auto'
     },
     table: {
@@ -25,9 +25,18 @@ const styles = theme => ({
 });
 
 class App extends Component {
-    state = {
+    state = {       // 상태 변화가 필요한 값
         customers: "",
     };
+    /*
+        1) constructor()
+
+        2) componentWillMount()
+
+        3) render()
+
+        4) componentDidMount()
+     */
 
     componentDidMount() {
         this.callApi().then(res => {
