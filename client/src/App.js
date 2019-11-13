@@ -53,8 +53,9 @@ class App extends Component {
     };
 
     stateRefresh = () => {
+        // TODO 이 부분 수정 필요 함
         window.location.reload()
-    }
+    };
 
     render() {
         const {classes} = this.props;

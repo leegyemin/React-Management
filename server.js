@@ -53,10 +53,10 @@ app.delete('/api/customers/:id', (req, res) => {
     let sql = 'UPDATE CUSTOMER SET isDeleted = 1 where id = ?';
     let params = [req.params.id];
     connection.query(sql, params,
-        ( err, rows, fiedls) => {
+        (err, rows, fiedls) => {
             res.send(rows)
         })
-})
+});
 
 app.get('/api/hello', (req, res) => {
     res.send({message: "Hello ~ "});
