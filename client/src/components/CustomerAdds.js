@@ -60,6 +60,7 @@ class CusomterAdd extends React.Component {
                     fileName: '',
                     open: false
                 });
+                // this.props.stateRefresh()
                 window.location.reload();
             })
 

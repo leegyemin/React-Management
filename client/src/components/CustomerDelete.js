@@ -19,20 +19,22 @@ class CustomerDelete extends React.Component {
         this.setState({
             open: true
         })
-    }
+    };
 
     handleClose = () => {
         this.setState({
             open: false
         })
-    }
+    };
 
     deleteCustomer(id) {
         const url = '/api/customers/' + id;
         fetch(url, {
             method: 'DELETE'
-        });
-        this.props.stateRefresh();
+        }).then(() => {
+            window.location.reload();
+            // this.props.stateRefresh();
+        })
     }
 
     render() {
