@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {BrowserRouter as Router} from 'react-router-dom'
+import Route from 'react-router-dom/Route'
 import './App.css';
 import Customer from './components/Customer'
 import CustomerAdd from './components/CustomerAdds';
@@ -91,6 +93,10 @@ const styles = theme => ({
         },
     },
 });
+
+const User = ({match}) => {
+    return (<h1> 사용자 상세 정보:  {match.params.username}</h1>)
+};
 
 class App extends Component {
     state = {       // 상태 변화가 필요한 값
@@ -191,29 +197,49 @@ class App extends Component {
                         </div>
                     </Toolbar>
                 </AppBar>
-                <div className={classes.menu}>
-                    <CustomerAdd/>
-                </div>
-                <Paper className={classes.paper}>
-                    <Table className={classes.table}>
-                        <TableHead>
-                            <TableRow>
-                                {
-                                    cellList.map((c, index) => {
-                                        return <TableCell key={index} className={classes.tableHead}>{c}</TableCell>
-                                    })
-                                }
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.state.customers ? filterComponents() :
-                                <TableRow>
-                                    <TableCell colSpan={7} align="center"><CircularProgress/></TableCell>
-                                </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
-                </Paper>
+                <Router>
+                    <Route path="/" exact render={
+                        () => {
+                            return (
+                                <div>
+                                    <div className={classes.menu}>
+                                        <CustomerAdd/>
+                                    </div>
+                                    <Paper className={classes.paper}>
+                                        <Table className={classes.table}>
+                                            <TableHead>
+                                                <TableRow>
+                                                    {
+                                                        cellList.map((c, index) => {
+                                                            return <TableCell key={index}
+                                                                              className={classes.tableHead}>{c}</TableCell>
+                                                        })
+                                                    }
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {this.state.customers ? filterComponents() :
+                                                    <TableRow>
+                                                        <TableCell colSpan={7}
+                                                                   align="center"><CircularProgress/></TableCell>
+                                                    </TableRow>
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </Paper>
+                                </div>
+                            )
+                        }
+                    }/>
+                    <Route path="/test" render={
+                        () => {
+                            return (
+                                <h2> test component</h2>
+                            )
+                        }
+                    }/>
+                    <Route path="/user/:username" component={User}/>
+                </Router>
             </div>
         )
     }

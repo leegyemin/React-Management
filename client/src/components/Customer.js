@@ -3,6 +3,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import CustomerDelete from './CustomerDelete';
 import {withStyles} from '@material-ui/core/styles'
+import {Link} from 'react-router-dom'
 
 const styles = theme => ({
     image: {
@@ -20,7 +21,7 @@ class Customer extends React.Component {
             <TableRow>
                 <TableCell>{this.props.id}</TableCell>
                 <TableCell><img className={classes.image} src={this.props.image} alt="profile"/></TableCell>
-                <TableCell>{this.props.name}</TableCell>
+                <TableCell><Link to={`/user/${this.props.name}`}>{this.props.name}</Link></TableCell>
                 <TableCell>{this.props.birthday}</TableCell>
                 <TableCell>{this.props.gender}</TableCell>
                 <TableCell>{this.props.job}</TableCell>
