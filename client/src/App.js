@@ -95,7 +95,7 @@ const styles = theme => ({
 });
 
 const User = ({match}) => {
-    return (<h1> 사용자 상세 정보:  {match.params.username}</h1>)
+    return (<h1> 사용자 상세 정보: {match.params.username}</h1>)
 };
 
 class App extends Component {
@@ -104,20 +104,34 @@ class App extends Component {
         searchKeyword: ""
     };
 
-    /*
+    /* Mounting
         1) constructor()
 
-        2) componentWillMount()
+        2) componentWillMount() // deprecated
 
         3) render()
 
         4) componentDidMount()
      */
 
+    /* state Change
+        1) shouldComponentUpdate  (true or false) // 낭비 자원 처리
+                    true일경우
+        2) componentWillUpdate
+
+        3) render
+
+        4) componentDidUpdate
+     */
+
     componentDidMount() {
         this.callApi().then(res => {
             this.setState({customers: res})
         }).catch(err => console.log(err))
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.log(`compoentn Did Catch ${error}`);
     }
 
     callApi = async () => {
