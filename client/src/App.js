@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router} from 'react-router-dom'
 import Route from 'react-router-dom/Route'
 import './App.css';
+import Footer from './shared/components/footer'
 import Customer from './components/Customer'
 import CustomerAdd from './components/CustomerAdds';
 import Paper from '@material-ui/core/Paper'
@@ -254,6 +255,7 @@ class App extends Component {
                     }/>
                     <Route path="/user/:username" component={User}/>
                 </Router>
+                <Footer/>
             </div>
         )
     }
