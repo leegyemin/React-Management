@@ -1,18 +1,8 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router} from 'react-router-dom'
-import Route from 'react-router-dom/Route'
 import './App.css';
 import Footer from './shared/components/footer'
-import Customer from './components/Customer'
-import CustomerAdd from './components/CustomerAdds';
-import Paper from '@material-ui/core/Paper'
-import Table from '@material-ui/core/Table'
-import TableHead from '@material-ui/core/TableHead'
-import TableBody from '@material-ui/core/TableBody'
-import TableRow from '@material-ui/core/TableRow'
-import TableCell from '@material-ui/core/TableCell'
+import Routes from './routes';
 import {withStyles} from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -100,11 +90,6 @@ const User = ({match}) => {
 };
 
 class App extends Component {
-    state = {       // 상태 변화가 필요한 값
-        customers: "",
-        searchKeyword: ""
-    };
-
     /* Mounting
         1) constructor()
 
@@ -126,22 +111,16 @@ class App extends Component {
      */
 
     componentDidMount() {
-        this.callApi().then(res => {
-            this.setState({customers: res})
-        }).catch(err => console.log(err))
+        /**
+         * 1) Login한 계정의 Autority를 가져와서 Root Props 설정 => Props 전달의 불편함....
+         */
     }
 
     componentDidCatch(error, errorInfo) {
         console.log(`compoentn Did Catch ${error}`);
     }
 
-    callApi = async () => {
-        const response = await fetch('/api/customers');
-        const body = await response.json();
-        return body;
-    };
-
-    stateRefresh = () => {
+   /* stateRefresh = () => {
         console.log('state refresh');
         this.setState({
             customers: '',
@@ -153,8 +132,11 @@ class App extends Component {
                 this.setState({customer: res})
             })
             .catch(err => console.log(err))
-    };
+    };*/
 
+   /**
+    * keyword 검색 event
+    **/
     handleValueChange = (e) => {
         let nextState = {};
         nextState[e.target.name] = e.target.value;
@@ -162,23 +144,7 @@ class App extends Component {
     };
 
     render() {
-        const filterComponents = () => {
-            let data = this.state.customers.filter((c) => {
-                return c.name.indexOf(this.state.searchKeyword) > -1
-            });
-            return data.map((c) => {
-                return <Customer stateRefresh={this.stateRefresh}
-                                 key={c.id}
-                                 id={c.id}
-                                 image={c.image}
-                                 name={c.name}
-                                 birthday={c.birthday}
-                                 gender={c.gender}
-                                 job={c.job}/>
-            })
-        };
         const {classes} = this.props;
-        const cellList = ["번호", "프로필 이미지", "이름", "생년월일", "성별", "직업", "삭제"];
         return (
             <div className={classes.root}>
                 <AppBar position="static">
@@ -194,7 +160,7 @@ class App extends Component {
                         <Typography className={classes.title} variant="h6" noWrap>
                             고객 관리 시스템
                         </Typography>
-                        <div className={classes.search}>
+                        {/*<div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon/>
                             </div>
@@ -209,52 +175,10 @@ class App extends Component {
                                 value={this.state.searchKeyword}
                                 onChange={this.handleValueChange}
                             />
-                        </div>
+                        </div>*/}
                     </Toolbar>
                 </AppBar>
-                <Router>
-                    <Route path="/" exact render={
-                        () => {
-                            return (
-                                <div>
-                                    <div className={classes.menu}>
-                                        <CustomerAdd/>
-                                    </div>
-                                    <Paper className={classes.paper}>
-                                        <Table className={classes.table}>
-                                            <TableHead>
-                                                <TableRow>
-                                                    {
-                                                        cellList.map((c, index) => {
-                                                            return <TableCell key={index}
-                                                                              className={classes.tableHead}>{c}</TableCell>
-                                                        })
-                                                    }
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {this.state.customers ? filterComponents() :
-                                                    <TableRow>
-                                                        <TableCell colSpan={7}
-                                                                   align="center"><CircularProgress/></TableCell>
-                                                    </TableRow>
-                                                }
-                                            </TableBody>
-                                        </Table>
-                                    </Paper>
-                                </div>
-                            )
-                        }
-                    }/>
-                    <Route path="/test" render={
-                        () => {
-                            return (
-                                <h2> test component</h2>
-                            )
-                        }
-                    }/>
-                    <Route path="/user/:username" component={User}/>
-                </Router>
+                <Routes/>
                 <Footer/>
             </div>
         )

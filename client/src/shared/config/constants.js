@@ -1,0 +1,4 @@
+export const AUTHORITIES = {
+    AM: 'ADMIN',
+    ASV: 'APPLICATION_SUPERVISOR'
+};
