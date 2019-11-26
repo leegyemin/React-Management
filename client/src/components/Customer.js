@@ -4,7 +4,7 @@ import TableCell from '@material-ui/core/TableCell'
 import CustomerDelete from './CustomerDelete';
 import {withStyles} from '@material-ui/core/styles'
 import {Link} from 'react-router-dom'
-import CustomerAdd from './CustomerAdds';
+import CustomerAdd from 'components/CustomerAdds';
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableHead from '@material-ui/core/TableHead'
